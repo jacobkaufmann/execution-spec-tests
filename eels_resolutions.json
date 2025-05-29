@@ -35,8 +35,11 @@
         "same_as": "EELSMaster"
     },
     "Prague": {
-      "git_url": "https://github.com/marioevz/execution-specs.git",
-      "branch": "forks/prague",
-      "commit": "bb0eb750d643ced0ebf5dec732cdd23558d0b7f2"
+	"same_as": "EELSMaster"
+    },
+    "Osaka": {
+        "git_url": "https://github.com/jacobkaufmann/execution-specs.git",
+        "branch": "eips/osaka/eip-7805",
+        "commit": "ecfb525ddfbc031bc32407c46454acea1d4b9e3e"
     }
 }

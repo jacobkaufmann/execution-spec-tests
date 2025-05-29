@@ -236,6 +236,10 @@ class Block(Header):
     """
     Custom list of requests to embed in this block.
     """
+    inclusion_list: List[Bytes] | None = None
+    """
+    Inclusion list to apply to this block.
+    """
     expected_post_state: Alloc | None = None
     """
     Post state for verification after block execution in BlockchainTest
@@ -439,6 +443,7 @@ class BlockchainTest(BaseTest):
             chain_id=self.chain_id,
             reward=fork.get_reward(env.number, env.timestamp),
             blob_schedule=fork.blob_schedule(),
+            inclusion_list=block.inclusion_list,
             eips=eips,
             debug_output_path=self.get_next_transition_tool_output_path(),
             slow_request=slow,
@@ -692,6 +697,7 @@ class BlockchainTest(BaseTest):
                         transactions=txs,
                         withdrawals=new_env.withdrawals,
                         requests=requests,
+                        inclusion_list=block.inclusion_list,
                         validation_error=block.exception,
                         error_code=block.engine_api_error_code,
                     )
@@ -740,6 +746,7 @@ class BlockchainTest(BaseTest):
                 transactions=[],
                 withdrawals=[],
                 requests=requests,
+                inclusion_list=None,
                 validation_error=None,
                 error_code=None,
             )

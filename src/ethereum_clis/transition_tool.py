@@ -17,7 +17,7 @@ from requests import Response
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests_unixsocket import Session  # type: ignore
 
-from ethereum_test_base_types import BlobSchedule
+from ethereum_test_base_types import BlobSchedule, Bytes
 from ethereum_test_exceptions import ExceptionMapper
 from ethereum_test_forks import Fork
 from ethereum_test_types import Alloc, Environment, Transaction
@@ -140,6 +140,7 @@ class TransitionTool(EthereumCLI):
         chain_id: int
         reward: int
         blob_schedule: BlobSchedule | None
+        inclusion_list: List[Bytes] | None
         state_test: bool
 
         def to_input(self) -> TransitionToolInput:
@@ -148,6 +149,7 @@ class TransitionTool(EthereumCLI):
                 alloc=self.alloc,
                 txs=self.txs,
                 env=self.env,
+                inclusion_list=self.inclusion_list,
             )
 
         def get_request_data(self) -> TransitionToolRequest:
@@ -500,6 +502,7 @@ class TransitionTool(EthereumCLI):
         chain_id: int,
         reward: int,
         blob_schedule: BlobSchedule | None,
+        inclusion_list: List[Bytes] | None,
         eips: Optional[List[int]] = None,
         debug_output_path: str = "",
         state_test: bool = False,
@@ -527,6 +530,7 @@ class TransitionTool(EthereumCLI):
             chain_id=chain_id,
             reward=reward,
             blob_schedule=blob_schedule,
+            inclusion_list=inclusion_list,
             state_test=state_test,
         )
 

@@ -227,10 +227,18 @@ EngineNewPayloadV4Parameters = Tuple[
     Hash,
     List[Bytes],
 ]
+EngineNewPayloadV5Parameters = Tuple[
+    FixtureExecutionPayload,
+    List[Hash],
+    Hash,
+    List[Bytes],
+    List[Bytes],
+]
 
 # Important: We check EngineNewPayloadV3Parameters first as it has more fields, and pydantic
 # has a weird behavior when the smaller tuple is checked first.
 EngineNewPayloadParameters = Union[
+    EngineNewPayloadV5Parameters,
     EngineNewPayloadV4Parameters,
     EngineNewPayloadV3Parameters,
     EngineNewPayloadV1Parameters,
@@ -270,6 +278,7 @@ class FixtureEngineNewPayload(CamelModel):
         transactions: List[Transaction],
         withdrawals: List[Withdrawal] | None,
         requests: List[Bytes] | None,
+        inclusion_list: List[Bytes] | None,
         **kwargs,
     ) -> "FixtureEngineNewPayload":
         """Create `FixtureEngineNewPayload` from a `FixtureHeader`."""
@@ -302,6 +311,11 @@ class FixtureEngineNewPayload(CamelModel):
             if requests is None:
                 raise ValueError(f"Requests are required for ${fork}.")
             params.append(requests)
+
+        if fork.engine_new_payload_inclusion_list(header.number, header.timestamp):
+            if inclusion_list is None:
+                raise ValueError(f"Inclusion list is required for ${fork}.")
+            params.append(inclusion_list)
 
         payload_params: EngineNewPayloadParameters = cast(
             EngineNewPayloadParameters,

@@ -596,6 +596,10 @@ class BlockException(ExceptionBase):
     """
     Block header's hash does not match the actually computed hash of the block.
     """
+    UNSATISFIED_INCLUSION_LIST = auto()
+    """
+    Block transactions do not satisfy the inclusion list.
+    """
 
 
 @unique

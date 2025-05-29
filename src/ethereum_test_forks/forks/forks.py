@@ -294,6 +294,11 @@ class Frontier(BaseFork, solc_name="homestead"):
         return False
 
     @classmethod
+    def engine_new_payload_inclusion_list(cls, block_number: int = 0, timestamp: int = 0) -> bool:
+        """At genesis, payloads do not have an inclusion list."""
+        return False
+
+    @classmethod
     def engine_new_payload_target_blobs_per_block(
         cls,
         block_number: int = 0,
@@ -1290,6 +1295,18 @@ class Osaka(Prague, solc_name="cancun"):
     ) -> Optional[int]:
         """From Osaka, get payload calls must use version 5."""
         return 5
+
+    @classmethod
+    def engine_new_payload_version(
+        cls, block_number: int = 0, timestamp: int = 0
+    ) -> Optional[int]:
+        """From Osaka, new payload calls must use version 5."""
+        return 5
+
+    @classmethod
+    def engine_new_payload_inclusion_list(cls, block_number: int = 0, timestamp: int = 0) -> bool:
+        """From Osaka, new payloads include the inclusion list as a parameter."""
+        return True
 
     @classmethod
     def evm_code_types(cls, block_number: int = 0, timestamp: int = 0) -> List[EVMCodeType]:

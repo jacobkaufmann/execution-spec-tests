@@ -68,6 +68,7 @@ class TransitionToolInput(CamelModel):
     alloc: Alloc
     txs: List[Transaction]
     env: Environment
+    inclusion_list: List[Bytes] | None = Field(None, alias="inclusionList")
 
 
 class TransitionToolOutput(CamelModel):
