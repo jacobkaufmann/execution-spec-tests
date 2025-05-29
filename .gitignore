@@ -1,5 +1,4 @@
 .DS_Store
-__pycache__
 .AppleDouble
 .LSOverride
 
@@ -7,8 +6,13 @@ __pycache__
 __pycache__/
 *.py[cod]
 *$py.class
+.venv/
 venv/
-/fixtures/
+
+# Artifacts created by `fill`
+fixtures/
+fixtures-*/
+logs/
 /out/
 
 # C extensions
@@ -51,8 +55,7 @@ pip-delete-this-directory.txt
 # misc
 *.code-workspace
 verify_kzg_proof
-.vscode/launch.recommended.json
-.vscode/settings.local.recommended.json
+.vscode/launch.json
 
 # docs
 .cache

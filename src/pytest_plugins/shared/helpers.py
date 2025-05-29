@@ -7,7 +7,19 @@ from _pytest.mark.structures import ParameterSet
 
 from ethereum_test_execution import ExecuteFormat, LabeledExecuteFormat
 from ethereum_test_fixtures import FixtureFormat, LabeledFixtureFormat
-from ethereum_test_tools import SPEC_TYPES, BaseTest
+from ethereum_test_tools import BaseTest
+
+
+def is_help_or_collectonly_mode(config: pytest.Config) -> bool:
+    """Check if pytest is running in a help or collectonly mode."""
+    return (
+        config.getoption("markers")
+        or config.getoption("collectonly")
+        or config.getoption("markers")
+        or config.getoption("show_ported_from")
+        or config.getoption("links_as_filled")
+        or config.getoption("help")
+    )
 
 
 def labeled_format_parameter_set(
@@ -57,7 +69,7 @@ def get_spec_format_for_item(
     params: Dict[str, Any],
 ) -> Tuple[Type[BaseTest], Any]:
     """Return the spec type and execute format for the given test item."""
-    for spec_type in SPEC_TYPES:
+    for spec_type in BaseTest.spec_types.values():
         if spec_type.pytest_parameter_name() in params:
             return spec_type, params[spec_type.pytest_parameter_name()]
     raise ValueError("No spec type format found in the test item.")

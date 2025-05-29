@@ -199,6 +199,7 @@ class Frontier(BaseFork, solc_name="homestead"):
             assert authorization_list_or_count is None, (
                 f"Authorizations are not supported in {cls.name()}"
             )
+
             intrinsic_cost: int = gas_costs.G_TRANSACTION
 
             if contract_creation:
@@ -334,6 +335,11 @@ class Frontier(BaseFork, solc_name="homestead"):
     ) -> Optional[int]:
         """At genesis, payloads cannot be retrieved through the engine API."""
         return cls.engine_new_payload_version(block_number, timestamp)
+
+    @classmethod
+    def engine_get_blobs_version(cls, block_number: int = 0, timestamp: int = 0) -> Optional[int]:
+        """At genesis, blobs cannot be retrieved through the engine API."""
+        return None
 
     @classmethod
     def get_reward(cls, block_number: int = 0, timestamp: int = 0) -> int:
@@ -647,7 +653,12 @@ class Byzantium(Homestead):
         cls,
     ) -> List[Opcodes]:
         """Return list of Opcodes that are valid to work on this fork."""
-        return [Opcodes.RETURNDATASIZE, Opcodes.STATICCALL] + super(Byzantium, cls).valid_opcodes()
+        return [
+            Opcodes.REVERT,
+            Opcodes.RETURNDATASIZE,
+            Opcodes.RETURNDATACOPY,
+            Opcodes.STATICCALL,
+        ] + super(Byzantium, cls).valid_opcodes()
 
 
 class Constantinople(Byzantium):
@@ -1017,6 +1028,11 @@ class Cancun(Shanghai):
         return 3
 
     @classmethod
+    def engine_get_blobs_version(cls, block_number: int = 0, timestamp: int = 0) -> Optional[int]:
+        """At Cancun, the engine get blobs version is 1."""
+        return 1
+
+    @classmethod
     def engine_new_payload_blob_hashes(cls, block_number: int = 0, timestamp: int = 0) -> bool:
         """From Cancun, payloads must have blob hashes."""
         return True
@@ -1072,6 +1088,11 @@ class Prague(Cancun):
         return [Address(i) for i in range(0xB, 0x11 + 1)] + super(Prague, cls).precompiles(
             block_number, timestamp
         )
+
+    @classmethod
+    def tx_types(cls, block_number: int = 0, timestamp: int = 0) -> List[int]:
+        """At Prague, set-code type transactions are introduced."""
+        return [4] + super(Prague, cls).tx_types(block_number, timestamp)
 
     @classmethod
     def gas_costs(cls, block_number: int = 0, timestamp: int = 0) -> GasCosts:
@@ -1308,10 +1329,31 @@ class Osaka(Prague, solc_name="cancun"):
         """From Osaka, new payloads include the inclusion list as a parameter."""
         return True
 
+    def engine_get_blobs_version(cls, block_number: int = 0, timestamp: int = 0) -> Optional[int]:
+        """At Osaka, the engine get blobs version is 2."""
+        return 2
+
+    @classmethod
+    def is_deployed(cls) -> bool:
+        """
+        Flag that the fork has not been deployed to mainnet; it is under active
+        development.
+        """
+        return False
+
+    @classmethod
+    def solc_min_version(cls) -> Version:
+        """Return minimum version of solc that supports this fork."""
+        return Version.parse("1.0.0")  # set a high version; currently unknown
+
+
+class EOFv1(Prague, solc_name="cancun"):
+    """EOF fork."""
+
     @classmethod
     def evm_code_types(cls, block_number: int = 0, timestamp: int = 0) -> List[EVMCodeType]:
         """EOF V1 is supported starting from Osaka."""
-        return super(Osaka, cls).evm_code_types(
+        return super(EOFv1, cls).evm_code_types(
             block_number,
             timestamp,
         ) + [EVMCodeType.EOF_V1]
@@ -1325,7 +1367,7 @@ class Osaka(Prague, solc_name="cancun"):
             (Opcodes.EXTCALL, EVMCodeType.EOF_V1),
             (Opcodes.EXTSTATICCALL, EVMCodeType.EOF_V1),
             (Opcodes.EXTDELEGATECALL, EVMCodeType.EOF_V1),
-        ] + super(Osaka, cls).call_opcodes(block_number, timestamp)
+        ] + super(EOFv1, cls).call_opcodes(block_number, timestamp)
 
     @classmethod
     def is_deployed(cls) -> bool:

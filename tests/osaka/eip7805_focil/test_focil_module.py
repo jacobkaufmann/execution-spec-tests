@@ -6,8 +6,13 @@ abstract: Tests [EIP-7805 focil](https://eips.ethereum.org/EIPS/eip-7805)
 import pytest
 
 from ethereum_test_base_types import Bytes
-from ethereum_test_tools import Account, Alloc, Block, BlockException, BlockchainTestFiller, Transaction
-from ethereum_test_tools.vm.opcode import Opcodes as Op
+from ethereum_test_tools import (
+    Alloc,
+    Block,
+    BlockchainTestFiller,
+    BlockException,
+    Transaction,
+)
 from ethereum_test_types import Environment
 
 REFERENCE_SPEC_GIT_PATH = "DUMMY/eip-DUMMY.md"
@@ -20,7 +25,6 @@ def test_focil_module_nonempty_payload_empty_il(blockchain_test: BlockchainTestF
     """
     A non-empty execution payload and an empty inclusion list.
     """
-
     sender = pre.fund_eoa(100_000_000_000)
     recipient = pre.fund_eoa()
 
@@ -49,7 +53,6 @@ def test_focil_module_nonempty_payload_nonempty_il(blockchain_test: BlockchainTe
     """
     A non-empty execution payload with a single transaction and a non-empty inclusion list that contains only that single transaction.
     """
-
     sender = pre.fund_eoa(100_000_000_000)
     recipient = pre.fund_eoa()
 
@@ -78,7 +81,6 @@ def test_focil_module_empty_payload_nonempty_il_invalid_tx_invalid_encoding(bloc
     """
     An empty execution payload and a non-empty inclusion list that contains a single transaction that is an invalid encoding.
     """
-
     sender = pre.fund_eoa(100_000_000_000)
     recipient = pre.fund_eoa()
 
@@ -109,7 +111,6 @@ def test_focil_module_empty_payload_nonempty_il_invalid_tx_insufficient_gas_limi
     """
     An empty execution payload and a non-empty inclusion list that contains a single transaction that could consume more gas than what is available.
     """
-
     block = Block(txs=[])
 
     block_gas_limit = Environment().gas_limit
@@ -142,7 +143,6 @@ def test_focil_module_empty_payload_nonempty_il_invalid_tx_insufficient_balance(
     """
     An empty execution payload and a non-empty inclusion list that contains a single transaction that transfers more ETH than what is available.
     """
-
     value = 1000
 
     sender = pre.fund_eoa(value - 1)
@@ -173,7 +173,6 @@ def test_focil_module_empty_payload_nonempty_il_valid_tx(blockchain_test: Blockc
     """
     An empty execution payload and a non-empty valid inclusion list that contains a single valid transaction, which should have been included.
     """
-
     sender = pre.fund_eoa(100_000_000_000)
     recipient = pre.fund_eoa()
 

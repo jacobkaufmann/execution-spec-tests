@@ -54,7 +54,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from pytest import Item
 
 from ethereum_test_forks import get_forks
-from ethereum_test_specs import SPEC_TYPES
+from ethereum_test_specs import BaseTest
 from ethereum_test_tools.utility.versioning import (
     generate_github_url,
     get_current_commit_hash_or_tag,
@@ -218,7 +218,9 @@ def get_docstring_one_liner(item: pytest.Item) -> str:
 
 def get_test_function_test_type(item: pytest.Item) -> str:
     """Get the test type for the test function based on its fixtures."""
-    test_types: List[str] = [spec_type.pytest_parameter_name() for spec_type in SPEC_TYPES]
+    test_types: List[str] = [
+        spec_type.pytest_parameter_name() for spec_type in BaseTest.spec_types.values()
+    ]
     item = cast(pytest.Function, item)  # help mypy infer type
     fixture_names = item.fixturenames
     for test_type in test_types:
@@ -350,7 +352,9 @@ class TestDocsGenerator:
 
         To do: Needs refactor.
         """
-        skip_params = ["fork"] + [spec_type.pytest_parameter_name() for spec_type in SPEC_TYPES]
+        skip_params = ["fork"] + [
+            spec_type.pytest_parameter_name() for spec_type in BaseTest.spec_types.values()
+        ]
         for function_id, function_items in test_functions.items():
             assert all(isinstance(item, pytest.Function) for item in function_items)
             items = cast(List[pytest.Function], function_items)  # help mypy infer type
@@ -491,7 +495,7 @@ class TestDocsGenerator:
                 pytest_node_id=str(directory),
                 source_code_url=generate_github_url(directory, branch_or_commit_or_tag=self.ref),
                 # TODO: This won't work in all cases; should be from the development fork
-                # Currently breaks for `tests/osaka/eip7692_eof_v1/index.md`  # noqa: SC100
+                # Currently breaks for `tests/unscheduled/eip7692_eof_v1/index.md`  # noqa: SC100
                 target_or_valid_fork=fork.capitalize(),
                 package_name=get_import_path(directory),  # init.py will be used for docstrings
             )
@@ -552,8 +556,8 @@ class TestDocsGenerator:
 
             - ("Test Case Reference",) -> tests/index.md
             - ("Test Case Reference", "Berlin") -> tests/berlin/index.md
-            - ("Test Case Reference", "Osaka", "EIP-7692 EOF V1", tracker.md")
-                tests/osaka/eip7692_eof_v1/tracker.md
+            - ("Test Case Reference", "EIP-7692 EOF V1", tracker.md")
+                tests/unscheduled/eip7692_eof_v1/tracker.md
             - ("Test Case Reference", "Shanghai", "EIP-3855 PUSH0", "Spec") ->
                 tests/shanghai/eip3855_push0/spec.py
 
@@ -566,7 +570,7 @@ class TestDocsGenerator:
             length = len(x.path.parts)
             if length > 1:
                 fork = str(x.path.parts[1]).lower()  # the fork folder from the relative path
-                if fork not in fork_order:  # speculative features added to the end
+                if fork not in fork_order:  # unscheduled features added to the end
                     return (999, str(x.path))
             if length == 1:
                 return (0,)
