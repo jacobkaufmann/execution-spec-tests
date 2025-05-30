@@ -510,8 +510,8 @@ wheels = [
 
 [[package]]
 name = "ethereum-execution"
-version = "1.17.0rc6.dev1"
-source = { registry = "https://pypi.org/simple" }
+version = "1.17.0"
+source = { git = "https://github.com/jacobkaufmann/execution-specs.git?branch=eips%2Fosaka%2Feip-7805#441801ed82e922352bf4ce1374406a345c89b671" }
 dependencies = [
     { name = "coincurve" },
     { name = "ethereum-rlp" },
@@ -519,10 +519,6 @@ dependencies = [
     { name = "py-ecc" },
     { name = "pycryptodome" },
     { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/02/a1/f20e2b489a4d84afe97dfe10180fdd06d191ff448d1cbfd8c144c0f6c453/ethereum_execution-1.17.0rc6.dev1.tar.gz", hash = "sha256:70e9585ccaaa3e1fd6f8648f392ef25c0fb619aaadb58fb6a54f13f3b3f7bccc", size = 1120570, upload-time = "2025-02-13T21:27:29.107Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/6f/722677ffcfc0eebe925d20eeb8715f8c9d0dc3de4b9f04ab98601b5ab185/ethereum_execution-1.17.0rc6.dev1-py3-none-any.whl", hash = "sha256:1dd379e88be14fac040219ed59a7660f491d1ac336b56ae5cdc2a3b230b7f93e", size = 1452337, upload-time = "2025-02-13T21:27:26.52Z" },
 ]
 
 [[package]]
@@ -598,9 +594,9 @@ requires-dist = [
     { name = "coincurve", specifier = ">=20.0.0,<21" },
     { name = "colorlog", specifier = ">=6.7.0,<7" },
     { name = "eth-abi", specifier = ">=5.2.0" },
-    { name = "ethereum-execution", specifier = "==1.17.0rc6.dev1" },
+    { name = "ethereum-execution", git = "https://github.com/jacobkaufmann/execution-specs.git?branch=eips%2Fosaka%2Feip-7805" },
     { name = "ethereum-rlp", specifier = ">=0.1.3,<0.2" },
-    { name = "ethereum-spec-evm-resolver", git = "https://github.com/jacobkaufmann/ethereum-spec-evm-resolver?branch=feat-osaka-eip7805" },
+    { name = "ethereum-spec-evm-resolver", git = "https://github.com/jacobkaufmann/ethereum-spec-evm-resolver?branch=eips%2Fosaka%2Feip-7805" },
     { name = "ethereum-types", specifier = ">=0.2.1,<0.3" },
     { name = "filelock", specifier = ">=3.15.1,<4" },
     { name = "gitpython", specifier = ">=3.1.31,<4" },
@@ -663,7 +659,7 @@ wheels = [
 [[package]]
 name = "ethereum-spec-evm-resolver"
 version = "0.0.5"
-source = { git = "https://github.com/jacobkaufmann/ethereum-spec-evm-resolver?branch=feat-osaka-eip7805#0fbed32ba5de098907e3a7d755f5218323575460" }
+source = { git = "https://github.com/jacobkaufmann/ethereum-spec-evm-resolver?branch=eips%2Fosaka%2Feip-7805#11d6e5ad6607d6ebcb0a79a78ce8ad4799a44a88" }
 dependencies = [
     { name = "coincurve" },
     { name = "filelock" },

@@ -40,6 +40,6 @@
     "Osaka": {
         "git_url": "https://github.com/jacobkaufmann/execution-specs.git",
         "branch": "eips/osaka/eip-7805",
-        "commit": "ecfb525ddfbc031bc32407c46454acea1d4b9e3e"
+        "commit": "441801ed82e922352bf4ce1374406a345c89b671"
     }
 }

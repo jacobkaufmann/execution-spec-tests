@@ -129,4 +129,5 @@ mypy_path = ["src", "$MYPY_CONFIG_FILE_DIR/stubs"]
 plugins = ["pydantic.mypy"]
 
 [tool.uv.sources]
-ethereum-spec-evm-resolver = { git = "https://github.com/jacobkaufmann/ethereum-spec-evm-resolver", branch = "feat-osaka-eip7805" }
+ethereum-execution = { git = "https://github.com/jacobkaufmann/execution-specs.git", branch = "eips/osaka/eip-7805" }
+ethereum-spec-evm-resolver = { git = "https://github.com/jacobkaufmann/ethereum-spec-evm-resolver", branch = "eips/osaka/eip-7805" }
